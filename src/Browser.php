@@ -213,8 +213,9 @@ class Browser
      */
     public function screenshot($name)
     {
+        $store = static::$storeConsoleLogAt ? static::$storeScreenshotsAt : storage_path() . '/';
         $this->driver->takeScreenshot(
-            sprintf('%s/%s.png', rtrim(static::$storeScreenshotsAt, '/'), $name)
+            sprintf('%s/%s.png', rtrim($store, '/'), $name)
         );
 
         return $this;
@@ -229,10 +230,10 @@ class Browser
     public function storeConsoleLog($name)
     {
         $console = $this->driver->manage()->getLog('browser');
-
+        $store = static::$storeConsoleLogAt ? static::$storeConsoleLogAt : storage_path() . '/';
         if (! empty($console)) {
             file_put_contents(
-                sprintf('%s/%s.log', rtrim(static::$storeConsoleLogAt, '/'), $name)
+                sprintf('%s/%s.log', rtrim($store, '/'), $name)
                 , json_encode($console, JSON_PRETTY_PRINT)
             );
         }

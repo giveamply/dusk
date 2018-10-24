@@ -63,12 +63,15 @@ trait SupportsChrome
     {
         $driver = static::$chromeDriver
                 ?: realpath(__DIR__.'/../bin/chromedriver-'.static::driverSuffix());
+        return (new ChromeProcess($driver))->toProcess();
+        $driver = static::$chromeDriver
+                ?: realpath(__DIR__.'/../bin/chromedriver-'.static::driverSuffix());
 
         if (realpath($driver) === false) {
             throw new RuntimeException("Invalid path to Chromedriver [{$driver}].");
         }
 
-        return (new ProcessBuilder())
+        return (new Process())
                 ->setPrefix(realpath($driver))
                 ->getProcess()
                 ->setEnv(static::chromeEnvironment());
